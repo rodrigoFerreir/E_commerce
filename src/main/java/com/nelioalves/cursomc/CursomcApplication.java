@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.nelioalves.cursomc.domain.Categoria;
 import com.nelioalves.cursomc.domain.Cidade;
+import com.nelioalves.cursomc.domain.Cliente;
+import com.nelioalves.cursomc.domain.Endereco;
 import com.nelioalves.cursomc.domain.Estado;
 import com.nelioalves.cursomc.domain.Produto;
+import com.nelioalves.cursomc.domain.enums.TipoCliente;
 import com.nelioalves.cursomc.repositores.RepositoryCategorias;
 import com.nelioalves.cursomc.repositores.RepositoryCidade;
+import com.nelioalves.cursomc.repositores.RepositoryCliente;
+import com.nelioalves.cursomc.repositores.RepositoryEndereco;
 import com.nelioalves.cursomc.repositores.RepositoryEstado;
 import com.nelioalves.cursomc.repositores.RepositoryProdutos;
 
@@ -27,6 +32,10 @@ public class CursomcApplication implements CommandLineRunner {
 	private RepositoryCidade cidadeRepository;
 	@Autowired
 	private RepositoryEstado estadoRepository;
+	@Autowired
+	private RepositoryCliente clienteRepository;
+	@Autowired
+	private RepositoryEndereco enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -76,7 +85,38 @@ public class CursomcApplication implements CommandLineRunner {
 		
 		estadoRepository.saveAll(Arrays.asList(est1, est2, est3));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
+	    ////////
+		
+		Cliente clie1 = new Cliente(null, "Maria Silva", "36378912377", "maria@gmail.com", TipoCliente.PESSOAFISICA);
+		Cliente clie2 = new Cliente(null, "Rodrigo Ferreira", "3365998767", "rodrigo@hotmail.com", TipoCliente.PESSOAJURIDICA);
+		
+		clie1.getTelefones().addAll(Arrays.asList("98656475", "32546874"));
+		clie2.getTelefones().addAll(Arrays.asList("87542596", "88789696"));
+		
+		Endereco end1 = new Endereco(null, "Rua Flores", "300", "Jardim", "Centro", "56670000", clie1, c1);
+		Endereco end2 = new Endereco(null, "Altos", "001", "Apt 101", "Zona Sul", "33170000", clie2, c3);
+		Endereco end3 = new Endereco(null, "Avenida Matos", "404", "Not Found", "Zona Leste", "56670017", clie1, c2);
+		
+		clie1.getEnderecos().addAll(Arrays.asList(end1, end3));
+		clie2.getEnderecos().addAll(Arrays.asList(end2));
+		
+		clienteRepository.saveAll(Arrays.asList(clie1, clie2));
+		enderecoRepository.saveAll(Arrays.asList(end1, end2, end3));
 	}
 	
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
