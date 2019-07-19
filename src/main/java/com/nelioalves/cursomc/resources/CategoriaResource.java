@@ -1,11 +1,15 @@
 package com.nelioalves.cursomc.resources;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.nelioalves.cursomc.Services.CategoriaService;
 import com.nelioalves.cursomc.domain.Categoria;
@@ -22,6 +26,17 @@ public class CategoriaResource {
 		Categoria objBusca = service.buscarCategoria(id);
 		return ResponseEntity.ok().body(objBusca);
 		
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> inserir(@RequestBody Categoria obj){
+		obj = service.inserir(obj);
+		URI uri = ServletUriComponentsBuilder
+											.fromCurrentRequest()
+											.path("/{id}")	                //metodo para recuperar uri e concatenar com uri inicial
+											.buildAndExpand(obj.getId())
+											.toUri(); 
+		return ResponseEntity.created(uri).build();
 	}
 }
   
