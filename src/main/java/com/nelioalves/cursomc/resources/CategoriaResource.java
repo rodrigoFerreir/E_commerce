@@ -33,7 +33,7 @@ public class CategoriaResource {
 		obj = service.inserir(obj);
 		URI uri = ServletUriComponentsBuilder
 											.fromCurrentRequest()
-											.path("/{id}")	                //metodo para recuperar uri e concatenar com uri inicial
+											.path("/{id}")	       //metodo para recuperar uri e concatenar com uri inicial
 											.buildAndExpand(obj.getId())
 											.toUri(); 
 		return ResponseEntity.created(uri).build();
@@ -45,6 +45,13 @@ public class CategoriaResource {
 		obj = service.atualizar(obj);
 		
 		return ResponseEntity.noContent().build();
-	}	
+	}
+
+	@RequestMapping(value = "/{id}" ,method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deletar(@RequestBody Categoria obj, @PathVariable Integer id){
+		service.deletar(id);
+		return ResponseEntity.noContent().build();
+	}
+
 }
   
