@@ -1,5 +1,6 @@
 package com.nelioalves.cursomc.Services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,10 @@ public class CategoriaService {
 		Optional<Categoria> categ = repo.findById(id);
 		return categ.orElseThrow(() -> new ObjectNotFundExcepion(
 				"Objeto não encontrado! Id: " + id + ". Tipo: " + Categoria.class.getName()));
+	}
+
+	public List<Categoria> buscarTodos() { // buscando todas as categorias.
+		return repo.findAll();
 	}
 	
 	public Categoria inserir(Categoria obj) {
