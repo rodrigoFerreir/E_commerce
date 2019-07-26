@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.nelioalves.cursomc.Services.exceptions.DataIntegrityException;
 import com.nelioalves.cursomc.Services.exceptions.ObjectNotFundExcepion;
 import com.nelioalves.cursomc.domain.Categoria;
+import com.nelioalves.cursomc.dto.CategoriaDTO;
 import com.nelioalves.cursomc.repositores.RepositoryCategorias;
 
 @Service
@@ -55,5 +56,9 @@ public class CategoriaService {
 	public Page<Categoria> buscaPorPagina(Integer page, Integer linhasPorPaginas, String direction, String orderBy) {
 		PageRequest pageRequest = PageRequest.of(page, linhasPorPaginas, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
+	}
+
+	public Categoria fromDTO(CategoriaDTO objDto){ // Metodo auxiliar para converter categoria para categoriaDTO
+		return new Categoria(objDto.getId(), objDto.getNome());
 	}
 }
