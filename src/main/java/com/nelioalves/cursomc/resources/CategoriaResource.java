@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -34,8 +36,7 @@ public class CategoriaResource {
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List <CategoriaDTO>> buscarTodos() {
 		List <Categoria> listBusca = service.buscarTodos();
-		List <CategoriaDTO> listDTO = listBusca.stream().map(obj -> new CategoriaDTO(obj))
-																.collect(Collectors.toList());
+		List <CategoriaDTO> listDTO = listBusca.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 		
 	}
@@ -63,6 +64,18 @@ public class CategoriaResource {
 	public ResponseEntity<Void> deletar(@RequestBody Categoria obj, @PathVariable Integer id){
 		service.deletar(id);
 		return ResponseEntity.noContent().build();
+	}
+
+	@RequestMapping(value = "/page", method=RequestMethod.GET)
+	public ResponseEntity<Page<CategoriaDTO>> buscarPagina(
+				@RequestParam(value = "page", defaultValue = "0") Integer page, 
+				@RequestParam(value = "linhasPorPaginas", defaultValue = "24") Integer linhasPorPaginas, 
+				@RequestParam(value = "direction", defaultValue = "ASC") String direction, 
+				@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy) {
+		Page <Categoria> listBusca = service.buscaPorPagina(page, linhasPorPaginas, direction, orderBy);
+		Page <CategoriaDTO> listDTO = listBusca.map(obj -> new CategoriaDTO(obj));
+		return ResponseEntity.ok().body(listDTO);
+		
 	}
 
 }
