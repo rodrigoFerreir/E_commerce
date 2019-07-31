@@ -49,7 +49,7 @@ public class Cliente implements Serializable{
 		this.nome = nome;
 		this.cpf = cpf;
 		this.email = email;
-		this.tipo = tipo.getCod();
+		this.tipo = (tipo == null)? null: tipo.getCod(); // operador ternario*
 	}
 
 	public Integer getId() {
